@@ -2,34 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
+use App\Models\User;
 use App\Models\StudyDay;
 use Illuminate\Http\Request;
 
-class StudyDaysController extends Controller
+class StudyDayController extends Controller
 {
     // Show Create Form
     public function create($id)
     {
         $studyDays = StudyDay::filter($id)->get();
 
-        $daysOfWeek = [false, false, false, false, false, false, false];
+        $studyDaysMold = [null, null, null, null, null, null, null];
+        $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednsday', 'Thursday', 'Friday', 'Saturday'];
 
-        for ($i = 1; $i <= 6; $i++) {
-            if ($i <= count($studyDays)) {
-                $daysOfWeek[$studyDays[$i - 1]['day_of_week']] = $studyDays[$i - 1];
+        for ($i = 0; $i <= 5; $i++) {
+            if ($i + 1 <= count($studyDays)) {
+                $studyDaysMold[$studyDays[$i]['day_of_week']] = $studyDays[$i];
             }
         }
 
         return view('study_days.create', [
             'id' => $id,
-            'studyDays' => $studyDays,
+            'studyDaysMold' => $studyDaysMold,
             'daysOfWeek' => $daysOfWeek
         ]);
     }
 
     // Show All Student's Study Days
-    public function showAllStudentStudyDays(Student $student)
+    public function showAllStudentStudyDays(User $student)
     {
         return view('study_days.study_days', [
             'student' => $student,
@@ -64,7 +65,6 @@ class StudyDaysController extends Controller
 
     // public function destroy(Student $student)
     // {
-
     //     StudyDay::filter($student['id'])->delete();
     // }
 }

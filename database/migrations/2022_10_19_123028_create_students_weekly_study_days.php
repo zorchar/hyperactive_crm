@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('students_weekly_study_days', function (Blueprint $table) {
             $table->id();
             $table->index('user_id');
-            $table->foreignId('user_id')->references('id')->on('students');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            //->references('id')->on('users');
             $table->integer('day_of_week');
             $table->time('start_time')->nullable(); // todo check
             $table->time('end_time')->nullable(); // todo check

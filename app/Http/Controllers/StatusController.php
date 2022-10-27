@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Status;
-use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class StatusController extends Controller
 {
     // Show All Student's Statuses
-    public function showAllStudentStatuses(Student $student)
+    public function showAllStudentStatuses(User $student)
     {
         return view('statuses.statuses', [
             'student' => $student,

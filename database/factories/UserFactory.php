@@ -18,12 +18,25 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'role' => 0,
             'email' => fake()->unique()->safeEmail(),
-            // 'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'phone' => '05' . fake()->numberBetween($min = 2, $max = 8) . fake()->numberBetween($min = 1000000, $max = 9999999),
+            'national_id' => fake()->numberBetween($min = 100000000, $max = 999999999),
+            'address' => fake()->address(),
+            'curriculum' => 'frontend',
+            'starting_date' => now()
         ];
+        // return [
+        //     'name' => fake()->name(),
+        //     'email' => fake()->unique()->safeEmail(),
+        //     // 'email_verified_at' => now(),
+        //     'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        //     'remember_token' => Str::random(10),
+        // ];
     }
 
     /**

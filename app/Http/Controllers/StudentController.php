@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use App\Models\Status;
-use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -14,16 +15,17 @@ class StudentController extends Controller
     {
         return view('welcome', [
             // 'students' => Student::latest()->get()
-            'students' => Student::get()
+            'students' => User::get()
         ]);
     }
 
     // Show Single Student
-    public function show(Student $student)
+    public function show(User $student)
     {
         return view('students.student', [
             'student' => $student,
-            'status' => Status::latest()->filter($student['id'])->get()->first()
+            'status' => Status::latest()->filter($student['id'])->get()->first(),
+            'question' => Question::latest()->filter($student['id'])->get()->first()
         ]);
     }
 
@@ -40,14 +42,16 @@ class StudentController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'national_id' => 'required',
-            'email' => ['required', 'email', Rule::unique('students', 'email')],
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
             'phone' => 'required',
             'address' => 'required',
             'curriculum' => 'nullable',
             'starting_date' => 'required'
         ]);
 
-        Student::create($formFields);
+        $formFields['role'] = 0;
+
+        User::create($formFields);
 
         return redirect('/')->with('message', 'Student Created!');
     }

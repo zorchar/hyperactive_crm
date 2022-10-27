@@ -7,7 +7,6 @@
                 <div>
                     <a href="/students/{{ $student['id'] }}">{{ $student['id'] }}</a>
                 </div>
-                {{-- <x-listing-card :user='$listing'/> --}}
             @endforeach
         @else
             <p>No student found</p>

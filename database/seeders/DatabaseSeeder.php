@@ -5,8 +5,9 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Status;
-use App\Models\Student;
+// use App\Models\Student;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,9 +21,15 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(10)->create();
 
-        Student::factory(10)->create();
-
         Status::factory(10)->create();
+
+        $descriptions = ['student', 'teacher', 'admin'];
+        for ($i = 1; $i < 4; $i++) {
+            Role::insert([
+                'role' => $i,
+                'description' => $descriptions[$i - 1]
+            ]);
+        }
 
         // Student::create(
         //     [

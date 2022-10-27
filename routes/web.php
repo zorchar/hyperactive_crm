@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StatusController;
-use App\Http\Controllers\StudyDaysController;
+use App\Http\Controllers\StudyDayController;
 use Illuminate\Support\Facades\Route;
 // use App\Models\Student;
 
@@ -32,7 +33,7 @@ Route::get('/students/create', [StudentController::class, 'create']);
 // Store Student Data
 Route::post('/students', [StudentController::class, 'store']);
 
-// Single User
+// Single Student
 Route::get('/students/{student}', [StudentController::class, 'show']);
 
 
@@ -52,13 +53,31 @@ Route::post('/students/{id}/statuses', [StatusController::class, 'store']);
 // study_days //
 
 // Show All Student's Statuses
-Route::get('/students/{student}/study_days', [StudyDaysController::class, 'showAllStudentStudyDays']);
+Route::get('/students/{student}/study_days', [StudyDayController::class, 'showAllStudentStudyDays']);
 
 // Show Create Study Days
-Route::get('/students/{id}/study_days/create', [StudyDaysController::class, 'create']);
+Route::get('/students/{id}/study_days/create', [StudyDayController::class, 'create']);
 
 // Store Study Days Data
-Route::post('/students/{id}/study_days', [StudyDaysController::class, 'store']);
+Route::post('/students/{id}/study_days', [StudyDayController::class, 'store']);
 
 // Delete Study Days
-Route::delete('/students/{id}/study_days', [StudyDaysController::class, 'destroy']);
+Route::delete('/students/{id}/study_days', [StudyDayController::class, 'destroy']);
+
+
+// questions //
+
+// Show All Student's Questions
+Route::get('/students/{student}/questions', [QuestionController::class, 'showAllStudentQuestions']);
+
+// Show Create Question
+Route::get('/students/{studentId}/questions/create', [QuestionController::class, 'create']);
+
+// Store Question Data
+Route::post('/students/{studentId}/questions', [QuestionController::class, 'store']);
+
+// Show Edit Question
+Route::get('/students/{student}/questions/{question}', [QuestionController::class, 'edit']);
+
+// Update Question
+Route::put('/students/{studentId}/questions/{question}', [QuestionController::class, 'update']);
