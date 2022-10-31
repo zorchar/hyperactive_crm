@@ -32,8 +32,11 @@ class StudyDayController extends Controller
     // Show All Student's Study Days
     public function showAllStudentStudyDays(User $student)
     {
+        $daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednsday', 'Thursday', 'Friday', 'Saturday'];
+
         return view('study_days.study_days', [
             'student' => $student,
+            'daysOfWeek' => $daysOfWeek,
             'studyDays' => StudyDay::filter($student['id'])->get()
         ]);
     }
@@ -42,25 +45,29 @@ class StudyDayController extends Controller
     public function store($id, Request $request)
     // add deletion of existing StudyDays
     {
+        //Make sure logged in user is owner
+        if (auth()->user()?->role > 1) {
 
-        StudyDay::filter($id)->delete();
+            StudyDay::filter($id)->delete();
 
-        for ($i = 1; $i <= 6; $i++) {
+            for ($i = 1; $i <= 6; $i++) {
 
-            if ($request['checkbox' . $i]) {
+                if ($request['checkbox' . $i]) {
 
-                $formFields['day_of_week'] = $i;
-                $formFields['user_id'] = $id;
-                $formFields['start_time'] = $request['start_time' . $i];
-                $formFields['end_time'] = $request['end_time' . $i];
-                $formFields['is_remote'] = $request['is_remote' . $i] ? 1 : 0;
+                    $formFields['day_of_week'] = $i;
+                    $formFields['user_id'] = $id;
+                    $formFields['start_time'] = $request['start_time' . $i];
+                    $formFields['end_time'] = $request['end_time' . $i];
+                    $formFields['is_remote'] = $request['is_remote' . $i] ? 1 : 0;
 
-                StudyDay::create($formFields);
+                    StudyDay::create($formFields);
+                }
             }
+
+            return redirect('/students/' . $id . '/study_days')->with('message', 'Study Days Created!');
         }
 
-
-        return redirect('/students/' . $id . '/study_days')->with('message', 'Study Days Created!');
+        abort(403, 'Unauthorized Action');
     }
 
     // public function destroy(Student $student)

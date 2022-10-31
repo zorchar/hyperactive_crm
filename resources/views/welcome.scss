@@ -1,8 +1,55 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+main {
+    padding: 10px;
+}
+
 .test {
     color: blue;
 }
 
 nav,
 footer {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
     background-color: aqua;
+    > div {
+        display: flex;
+        padding: 10px;
+        > div {
+            padding: 0 10px;
+        }
+    }
+}
+
+// nav {
+//     position: absolute;
+//     top: 0;
+//     width: 100vw;
+// }
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+}
+
+#search {
+    width: 200px;
+}
+
+.cell {
+    width: 200px;
+    height: 30px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        background-color: aqua;
+    }
 }

@@ -13,7 +13,8 @@ class StatusController extends Controller
     {
         return view('statuses.statuses', [
             'student' => $student,
-            'statuses' => Status::latest()->filter($student['id'])->get()
+            'statuses' => Status::latest()->filter($student['id'])->get(),
+            'User' => User::class
         ]);
     }
 
@@ -32,7 +33,7 @@ class StatusController extends Controller
             'description' => 'required', // add trim
         ]);
 
-        $formFields['creator'] = 'add real creator'; // todo
+        $formFields['creator'] = auth()->id(); // todo
         $formFields['user_id'] = $id;
         $formFields['created_at'] = now();
 

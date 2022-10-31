@@ -19,6 +19,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        User::create([
+            'first_name' => 'admin',
+            'last_name' => 'admin',
+            'email' => 'admin@admin.com',
+            'role' => 3,
+            'password' => '$2y$10$dXOgphTkOU1IcLdL6tk/v.KIey6PW7w90idshuIrj/nC62tIjIltS'
+        ]);
+
+        User::create([
+            'first_name' => 'a',
+            'last_name' => 'a',
+            'email' => 'a@a.com',
+            'role' => 1,
+            'password' => '$2y$10$dXOgphTkOU1IcLdL6tk/v.KIey6PW7w90idshuIrj/nC62tIjIltS'
+        ]);
+
         User::factory(10)->create();
 
         Status::factory(10)->create();

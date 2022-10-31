@@ -11,17 +11,15 @@
 
 <body>
     <x-flash-message />
-    <nav>
-        This is the nav bar
-        <a href="/">Home</a>
-    </nav>
+
+    <x-navbar />
+
     <main>
         {{-- @yield('content') --}}
         {{ $slot }}
     </main>
-    <footer>
-        This is the footer
-    </footer>
+
+    <x-footer />
 </body>
 
 </html>

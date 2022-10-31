@@ -19,7 +19,7 @@ class StatusFactory extends Factory
         return [
             'user_id' => fake()->numberBetween($min = 1, $max = 5),
             'description' => fake()->sentence($nbWords = 6, $variableNbWords = true),
-            'creator' => fake()->name(),
+            'creator' => 1,
             'created_at' => now()
         ];
     }

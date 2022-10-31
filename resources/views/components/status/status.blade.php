@@ -1,5 +1,5 @@
 <div>
     {{ $status['description'] }}
     {{ $status['created_at'] }}
-    {{ $status['creator'] }}
+    {{ App\Models\User::find($status['creator'])->first_name }}
 </div>

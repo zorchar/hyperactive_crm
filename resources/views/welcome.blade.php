@@ -1,17 +1,17 @@
 <x-layout>
+    <div id='auto-complete'></div>
     <div class="test">
         This is the welcome main
-        @unless(count($students) == 0)
-
-            @foreach ($students as $student)
+        @if (auth()->user()?->role === 1)
+            @if (App\Models\Attendance::latest()->filter(auth()->id())->where('created_at', 'like', '%' . date('y-m-d', strtotime(now())) . '%')->get()->first())
+                <div>You validated attendance</div>
+            @else
                 <div>
-                    <a href="/students/{{ $student['id'] }}">{{ $student['id'] }}</a>
+                    <a href="students/{{ auth()->id() }}/attendances/validate">
+                        Validate attendance!
+                    </a>
                 </div>
-            @endforeach
-        @else
-            <p>No student found</p>
-        @endunless
-
-        <a href="/students/create">Create Student</a>
+            @endif
+        @endif
     </div>
 </x-layout>

@@ -32,6 +32,8 @@ class QuestionController extends Controller
             'question' => 'required', // add trim
         ]);
 
+        // $formFields['student_id'] = auth()->id();
+
         $formFields['student_id'] = $studentId;
 
         Question::create($formFields);
@@ -44,16 +46,31 @@ class QuestionController extends Controller
     {
         return view('questions.edit', [
             'studentId' => $studentId,
-            'question' => $question
+            'question' => $question,
+            'User' => User::class
         ]);
     }
 
     // Update Question
     public function update($studentId, Question $question, Request $request)
     {
-        $formFields = $request->validate([
-            'question' => 'required', // add trim
-        ]);
+        if (auth()->id() != $studentId && !auth()->user()?->role > 1) {
+            abort(403, 'Unauthorized Action');
+        }
+
+        if (auth()->id() == $studentId) {
+
+            $formFields = $request->validate([
+                'question' => 'required', // add trim
+            ]);
+        } else if (auth()->user()?->role > 1) {
+
+            $formFields = $request->validate([
+                'teacher_remark' => 'nullable', // add trim
+            ]);
+        }
+
+        $formFields['updated_by'] = auth()->id();
 
         $question->update($formFields);
 

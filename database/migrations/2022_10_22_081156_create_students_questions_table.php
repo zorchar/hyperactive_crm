@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
             $table->string('question');
             $table->string('teacher_remark')->nullable();
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

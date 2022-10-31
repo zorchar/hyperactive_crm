@@ -25,4 +25,10 @@ class StudyDay extends Model
         'end_time',
         'is_remote'
     ];
+
+    // Relationship To User -- find out why is it neccecery
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

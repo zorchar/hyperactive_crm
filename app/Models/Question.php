@@ -22,5 +22,12 @@ class Question extends Model
         'student_id',
         'question',
         'teacher_remark',
+        'updated_by'
     ];
+
+    // Relationship To User -- find out why is it neccecery -- check Brad Traversy Tinker section
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

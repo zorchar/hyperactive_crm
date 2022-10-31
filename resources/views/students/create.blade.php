@@ -41,6 +41,25 @@
         @enderror
 
         <div>
+            <label for="password">Password:</label>
+            <input type="password" name="password">
+        </div>
+
+        @error('password')
+            {{ $message }}
+        @enderror
+
+        <div>
+            <label for="password_confirmation">Confirm Password:</label>
+            <input type="password" name="password_confirmation">
+        </div>
+
+        @error('password_confirmation')
+            {{ $message }}
+        @enderror
+
+
+        <div>
             <label for="phone">Phone Number:</label>
             <input type="text" name="phone" value="{{ old('phone') }}">
         </div>
@@ -76,7 +95,7 @@
             {{ $message }}
         @enderror
 
-        <button onclick="alert('hi')">Create Student</button>
+        <button>Create Student</button>
 
     </form>
 </x-layout>
