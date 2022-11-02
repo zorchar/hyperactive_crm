@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Question;
 use App\Models\Status;
+use App\Models\StudyDay;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -68,6 +70,10 @@ class StudentController extends Controller
             'userType' => $userType,
             'status' => Status::latest()->filter($user['id'])->get()->first(),
             'question' => Question::latest()->filter($user['id'])->get()->first(),
+            'attendance' => Attendance::latest()->filter($user['id'])->get()->first(),
+            'daysOfWeek' => ['Sunday', 'Monday', 'Tuesday', 'Wednsday', 'Thursday', 'Friday', 'Saturday'],
+            'studyDays' => StudyDay::filter($user['id'])->get()
+
         ]);
     }
 

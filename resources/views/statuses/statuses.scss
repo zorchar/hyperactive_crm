@@ -1,0 +1,27 @@
+.statuses-page {
+    .name {
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .student-container {
+        .student-row {
+            &:hover {
+                background-color: unset;
+                cursor: unset;
+            }
+            &:active {
+                background-color: unset;
+            }
+            div {
+                width: 33%;
+            }
+        }
+    }
+
+    .login-button {
+        text-decoration: none;
+        width: 120px;
+    }
+}

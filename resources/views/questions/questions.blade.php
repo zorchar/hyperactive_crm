@@ -7,6 +7,8 @@
         </a>
     @endforeach
     @if (auth()->user()->role == 1)
-        <a href={{ '/students/' . $student['id'] . '/questions/create' }}>New Question</a>
+        <div>
+            <a class="login-button" href={{ '/students/' . $student['id'] . '/questions/create' }}>New Question</a>
+        </div>
     @endif
 </x-layout>

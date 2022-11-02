@@ -30,7 +30,7 @@
                 <form method="POST" action="/logout">
                     @csrf
 
-                    <button>Logout</button>
+                    <button class="logout-button">Logout</button>
                 </form>
             @else
                 <a href="/login">Login</a>

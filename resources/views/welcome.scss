@@ -1,8 +1,12 @@
 @import "./students/student.scss";
+@import "./users/login.scss";
+@import "./statuses/statuses.scss";
 
 * {
     margin: 0;
     box-sizing: border-box;
+    font-family: "Times New Roman", Times, serif;
+    font-size: large;
 }
 
 body {
@@ -17,16 +21,35 @@ main {
 }
 
 .test {
-    // color: blue;
     background: #eee;
 }
 
 nav,
 footer {
+    color: #fff;
     padding: 10px;
     display: flex;
     justify-content: space-between;
-    background-color: aqua;
+    background-color: $myBlue;
+
+    .logout-button {
+        color: #fff;
+        border: none;
+        background: none;
+        &:hover {
+            color: #ccc;
+            cursor: pointer;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: #fff;
+        &:hover {
+            color: #ccc;
+        }
+    }
+
     > div {
         display: flex;
         padding: 10px;
@@ -58,17 +81,17 @@ footer {
     }
 }
 
-.report {
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 10px;
-}
+// .report {
+//     display: flex;
+//     flex-wrap: wrap;
+//     row-gap: 10px;
+// }
 
-.report_row {
-    display: flex;
-    width: 100vw;
-    column-gap: 20px;
-}
+// .report_row {
+//     display: flex;
+//     width: 100vw;
+//     column-gap: 20px;
+// }
 
 .student-container {
     display: flex;
@@ -90,16 +113,17 @@ footer {
             padding: 10px;
             display: flex;
             align-items: center;
-            border: 1px solid #ccc;
+            border: 1px solid $myBlue;
             border-bottom: transparent;
         }
 
         &:last-child {
-            border-bottom: 1px solid #ccc;
+            border-bottom: 1px solid $myBlue;
         }
 
         &:hover {
             background-color: #aaa;
+            cursor: pointer;
         }
 
         &:active {
@@ -108,16 +132,18 @@ footer {
     }
 
     .first {
+        cursor: unset;
+        div {
+            cursor: unset;
+        }
         font-weight: 700;
         &:hover {
             background-color: #eee;
+            cursor: unset;
         }
 
         &:active {
             background-color: #eee;
         }
     }
-}
-
-.table-first_line {
 }

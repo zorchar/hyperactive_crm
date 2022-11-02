@@ -60,7 +60,7 @@ Route::get('/students/{user}', [StudentController::class, 'show']);
 // Single Teacher
 Route::get('/teachers/{user}', [StudentController::class, 'show'])->middleware('authTeacher');
 
-// Delete User
+// Show Confirm Delete User
 Route::get('/{userType}/{user}/confirm_delete', [StudentController::class, 'showDestroy'])->middleware('authAdmin');
 
 // Delete User

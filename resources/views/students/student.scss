@@ -1,4 +1,51 @@
 .name {
     font-size: xx-large;
     font-weight: 700;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+.table-name {
+    margin-top: 30px;
+    font-size: x-large;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+.test {
+    .login-button {
+        text-decoration: none;
+        width: 130px;
+        margin-top: 20px;
+    }
+
+    .delete-button {
+        background-color: #b63737;
+    }
+
+    .delete-button_parent {
+        direction: rtl;
+    }
+
+    .student-container {
+        a {
+            text-decoration: none;
+        }
+        .student-row {
+            div {
+                width: 33.33%;
+            }
+        }
+    }
+
+    .attendances {
+        .student-row {
+            div {
+                width: 50%;
+            }
+        }
+    }
 }

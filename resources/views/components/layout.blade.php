@@ -12,9 +12,10 @@
 </head>
 
 <body onclick="cellOnClickHandler()">
-    <x-flash-message />
 
     <x-navbar />
+
+    <x-flash-message />
 
     <main>
         {{-- @yield('content') --}}

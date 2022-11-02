@@ -24,17 +24,15 @@ class AttendanceController extends Controller
     // Store Attendance
     public function store(User $user)
     {
-        if (!auth()->user() || auth()->user()->id != $user->id && auth()->user()->role == 1)
+        include '../app/utils/roles.php';
+        include '../app/utils/attendedToday.php';
+
+        if (!auth()->user() || auth()->user()->id != $user->id && auth()->user()->role == $roles['student'])
             return redirect('/')->with('message', 'Not Authorized');
 
-        include '../app/utils/roles.php';
-
-        if (
-            !(auth()->user()?->role === $roles['student'] &&
-                Attendance::latest()->filter(auth()->id())->where('created_at', 'like', '%' . date('y-m-d', strtotime(now())) . '%')->get()->first())
-        ) {
+        if (!attendedToday($user)) {
             Attendance::create([
-                'user_id' => auth()->id(),
+                'user_id' => $user->id,
                 'created_by' => auth()->id()
             ]);
 
