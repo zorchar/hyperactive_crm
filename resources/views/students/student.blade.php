@@ -1,47 +1,57 @@
 <x-layout>
     <div class="test">
-        This is the student screen
-        {{-- @unless($student == null) --}}
+        This is the user screen
 
-        {{-- @foreach ($student->getAttributes() as $key => $value)
-                <div>
-                    {{ $key . ': ' . $value }}
-                </div>
-            @endforeach --}}
-
-        <div>
-            Name: {{ $student->first_name . ' ' . $student->last_name }}
+        <div class="name">
+            Name: {{ $user->first_name . ' ' . $user->last_name }}
         </div>
 
-        @if (auth()->user()->role > 1 && $student->role == 1)
+        @if ((auth()->user()?->role > 1 && $user->role == 1) || (auth()->user()?->role > 2 && $user->role == 2))
+
             @if ($status)
                 Latest status:
-                <a href={{ '/students/' . $student['id'] . '/statuses' }}>
+                <a href={{ '/' . $userType . '/' . $user['id'] . '/statuses' }}>
                     <x-status.status :status='$status' />
                 </a>
             @else
                 <div>No statuses found</div>
             @endif
-            <a href={{ '/students/' . $student->id . '/statuses/create' }}>New Status</a>
+
+            <a href={{ '/' . $userType . '/' . $user->id . '/statuses/create' }}>New Status</a>
             <br />
         @endif
 
-        @if ($student->role == 1)
+        @if ($user->role == 1)
+
             @if ($question)
                 Latest question:
-                <a href={{ '/students/' . $student['id'] . '/questions' }}>
+                <a href={{ '/' . $userType . '/' . $user['id'] . '/questions' }}>
                     <x-question.question :question='$question' />
                 </a>
             @else
                 <div>No questions found</div>
             @endif
 
-            {{-- @if (auth()->id() == $student['id'])
-                <a href={{ '/students/' . $student['id'] . '/questions/create' }}>New Question</a>
-            @endif --}}
         @endif
-        {{-- @else
-            <p>No student found</p>
-        @endunless --}}
+
+        @if (auth()->user()?->role > 1 && $user->role == 1)
+            <div>
+                <a href={{ '/' . $userType . '/' . $user->id . '/attendances' }}>View Attendances</a>
+            </div>
+        @endif
+
+        @if (auth()->user()?->role > 1 && $user->role == 1)
+            <div>
+                <a href={{ '/' . $userType . '/' . $user->id . '/study_days' }}>View Study Days</a>
+            </div>
+        @endif
+
+        @if (auth()->user()?->role > 2)
+            <div>
+                <a href={{ '/' . $userType . '/' . $user->id . '/confirm_delete' }}>Delete User</a>
+            </div>
+        @endif
+
+
     </div>
 </x-layout>

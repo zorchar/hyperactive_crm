@@ -30,9 +30,9 @@ return new class extends Migration
             from statuses 
             group by user_id)
             select ls.user_id,  description, ls.created_at
-                     from last_statuses ls 
-                     join statuses s on ls.user_id = s.user_id and 
-                        ls.created_at = s.created_at 
+                    from last_statuses ls 
+                    join statuses s on ls.user_id = s.user_id and
+                    ls.created_at = s.created_at
           )
         ');
     }

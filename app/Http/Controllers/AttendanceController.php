@@ -22,8 +22,11 @@ class AttendanceController extends Controller
     }
 
     // Store Attendance
-    public function store()
+    public function store(User $user)
     {
+        if (!auth()->user() || auth()->user()->id != $user->id && auth()->user()->role == 1)
+            return redirect('/')->with('message', 'Not Authorized');
+
         include '../app/utils/roles.php';
 
         if (
@@ -44,28 +47,35 @@ class AttendanceController extends Controller
     // Edit Attendance
     public function update($student, Attendance $attendance, Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'approved_time_of_entry' => ['required', 'date'],
-        ]);
+        $formFields = $request->validate(
+            [
+                'approved_time_of_entry' => ['required', 'date'],
+            ]
+        );
 
-        if ($validator->fails())
-            return back()->with('message', 'Must provide date and time.');
-
-        $formFields = $request->validate([
-            'approved_time_of_entry' => ['required', 'date'],
-        ]);
-
-        if (array_key_exists('is_approved', $validator->valid())) {
+        if ($request->input('is_approved')) {
             $formFields['approved_by'] = auth()->id();
         } else {
             $formFields['approved_by'] = null;
+            $formFields['approved_time_of_entry'] = null;
         }
+
+        // $validator = Validator::make($request->all(), [
+        //     'approved_time_of_entry' => ['required', 'date'],
+        // ]);
+
+        // if ($validator->fails())
+        //     return back()->with('message', 'Must provide date and time.');
+
+        // if (array_key_exists('is_approved', $validator->valid())) {
+        //     $formFields['approved_by'] = auth()->id();
+        // } else {
+        //     $formFields['approved_by'] = null;
+        //     $formFields['approved_time_of_entry'] = null;
+        // }
+
         $attendance->update($formFields);
 
-        return redirect('/students/' . $attendance['user_id'] . '/attendances/');
-
-        // $attendance->delete();
-
-        // return redirect('/students/' . $attendance['user_id'] . '/attendances/');
+        return redirect('/students/' . $attendance['user_id'] . '/attendances/')->with('message', 'Attendance Changed!');
     }
 }

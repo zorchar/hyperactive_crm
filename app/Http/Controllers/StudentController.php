@@ -14,73 +14,80 @@ class StudentController extends Controller
     // Show All Students
     public function index()
     {
-        // if (!session('students')) // check if needs to ask for students every time or take from session
-        session(['students' => User::orderBy('first_name')->where('role', 'like', 1)->get(['id', 'first_name', 'last_name'])]);
+        $results = DB::select(DB::raw("select u.id,first_name,last_name, curriculum, lfs.description, lfs.created_at
+        from users u 
+        left join student_last_statuses  lfs on u.id = lfs.user_id
+        where u.role = 1
+        order by last_name, first_name
+        "));
 
-        return view('students.students', [
-            'students' => session('students')
+        $collection = collect($results);
+
+        return view('report', [
+            'users' => $collection,
+            'userType' => 'students'
         ]);
     }
 
-    public function showReport()
+    public function indexTeachers()
     {
-        // $statusesView = Status::orderBy('user_id', 'asc')->orderBy('created_at', 'desc')->select('user_id')->distinct()->get(['user_id', 'created_at']);
-        $results = DB::select(DB::raw("select u.id, curriculum, lfs.description, lfs.created_at  
-                from users u 
-                left join student_last_statuses  lfs on u.id = lfs.user_id   "));
+        $results = DB::select(DB::raw("select u.id,first_name,last_name, curriculum, lfs.description, lfs.created_at
+        from users u 
+        left join student_last_statuses  lfs on u.id = lfs.user_id
+        where u.role = 2
+        order by last_name, first_name
+        "));
 
-        //  $results = DB::select(DB::raw("with last_statuses as (
-        //     select user_id, max(id) as id
-        //     from statuses 
-        //     group by user_id ),
-        //     full_last_statuses as (
-        //         select ls.user_id, s.created_at, description 
-        //         from last_statuses ls 
-        //         join statuses s on  s.id = ls.id
-        //      )
-        //    select u.id, curriculum,  fls.created_at, fls.description 
-        //    from users u 
-        //    left join full_last_statuses fls on u.id = fls.user_id "));
+        $collection = collect($results);
 
-        dd($results);
-
-
-
-        // dd(User::orderBy('first_name')->where('role', 'like', 1)->joinSub($statusesView, 'statuses', function ($join) {
-        //     $join->on('users.id', '=', 'statuses.user_id');
-        // })->get(['users.id', 'first_name', 'last_name', 'curriculum', 'description', 'statuses.created_at']));
         return view('report', [
-            'students' => User::orderBy('first_name')->where('role', 'like', 1)->join('statuses', function ($join) {
-                $join->latest()->on('users.id', '=', 'statuses.user_id');
-            })->get(['users.id', 'first_name', 'last_name', 'curriculum', 'description', 'statuses.created_at'])
+            'users' => $collection,
+            'userType' => 'teachers'
         ]);
     }
 
     // Show Single Student
-    public function show(User $student)
+    public function show(User $user)
     {
-        unset($student['password']);
-        unset($student['remember_token']);
-        unset($student['created_at']);
-        unset($student['updated_at']);
-        session(['queriedUser' => $student]); // check later if needed
+        if (!auth()->user() || auth()->user()->id != $user->id && auth()->user()->role == 1)
+            return redirect('/')->with('message', 'Not Authorized');
+
+        unset($user['password']);
+        unset($user['remember_token']);
+        unset($user['created_at']);
+        unset($user['updated_at']);
+        session(['queriedUser' => $user]); // check later if needed
+
+        if ($user->role == 1)
+            $userType = 'students';
+        if ($user->role == 2)
+            $userType = 'teachers';
 
         return view('students.student', [
-            'student' => $student,
-            'status' => Status::latest()->filter($student['id'])->get()->first(),
-            'question' => Question::latest()->filter($student['id'])->get()->first(),
-            // 'User' => User::class
+            'user' => $user,
+            'userType' => $userType,
+            'status' => Status::latest()->filter($user['id'])->get()->first(),
+            'question' => Question::latest()->filter($user['id'])->get()->first(),
         ]);
     }
 
     // Show Create Form
-    public function create()
+    public function create($userType)
     {
-        return view('students.create');
+        if (
+            $userType == 'teachers' && auth()->user()?->role > 2 ||
+            $userType == 'students' && auth()->user()?->role > 1
+        ) {
+            return view('students.create', [
+                'userType' => $userType
+            ]);
+        }
+
+        return redirect('/')->with('message', 'Not Authorized');
     }
 
     // Store Student Data
-    public function store(Request $request)
+    public function store($userType, Request $request)
     {
         $formFields = $request->validate([
             'first_name' => 'required',
@@ -97,10 +104,32 @@ class StudentController extends Controller
         // Hash Password
         $formFields['password'] = bcrypt($formFields['password']);
 
-        $formFields['role'] = 1;
+        if ($userType == 'students')
+            $formFields['role'] = 1;
+        if ($userType == 'teachers')
+            $formFields['role'] = 2;
 
         User::create($formFields);
 
-        return redirect('/')->with('message', 'Student Created!');
+        return redirect('/' . $userType)->with('message', 'User Created!');
+    }
+
+    public function showDestroy($_, User $user)
+    {
+        return view('students.confirmDelete', [
+            'user' => $user
+        ]);
+    }
+
+    public function destroy(User $user)
+    {
+        if ($user->role == 1)
+            $userType = 'students';
+        if ($user->role == 2)
+            $userType = 'teachers';
+
+        $user->delete();
+
+        return redirect('/' . $userType)->with('message', 'User Deleted!');
     }
 }

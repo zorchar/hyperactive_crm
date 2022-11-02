@@ -7,7 +7,12 @@
             <div>
                 <a href="/students">Students</a>
             </div>
-        @else
+            @if (auth()->user()?->role > 2)
+                <div>
+                    <a href="/teachers">Teachers</a>
+                </div>
+            @endif
+        @elseif(auth()->user()?->role == 1)
             <div>
                 <a href="/students/{{ auth()->id() }}/questions">Questions</a>
             </div>

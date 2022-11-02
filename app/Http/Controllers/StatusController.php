@@ -27,18 +27,23 @@ class StatusController extends Controller
     }
 
     // Store Status Data
-    public function store($id, Request $request)
+    public function store(User $user, Request $request)
     {
+        if ($user->role == 1)
+            $userType = 'students';
+        if ($user->role == 2)
+            $userType = 'teachers';
+
         $formFields = $request->validate([
             'description' => 'required', // add trim
         ]);
 
         $formFields['creator'] = auth()->id(); // todo
-        $formFields['user_id'] = $id;
+        $formFields['user_id'] = $user->id;
         $formFields['created_at'] = now();
 
         Status::create($formFields);
 
-        return redirect('/students/' . $id . '/statuses')->with('message', 'Status Created!');
+        return redirect('/' . $userType . '/' . $user->id . '/statuses')->with('message', 'Status Created!');
     }
 }

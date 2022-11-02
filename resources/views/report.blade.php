@@ -1,31 +1,50 @@
     <x-layout>
-
         @include('searchBarScript')
 
-        <input id="search" oninput="searchBarOnInputHandler(this)">
+        <form action={{ '/' . $userType }}>
+            <input id="search" name="search" oninput="searchBarOnInputHandler(this)">
+            <button>Search</button>
+        </form>
         <div id='auto-complete'></div>
         <div class="test">
-            This is the welcome main
-            @unless(count($students) == 0)
-                @foreach ($students as $student)
-                    @if ($student->id === auth()->id() || auth()->user()?->role > 1)
+            This is the report
+            @unless(count($users) == 0)
+
+                <div class="student-container">
+
+                    <div class="student-row first">
                         <div>
-                            <a
-                                href="/students/{{ $student['id'] }}">{{ $student->first_name . ' ' . $student->last_name }}</a>
+                            Full Name
                         </div>
                         <div>
-                            {{ $student['curriculum'] }}
+                            Curriculum
                         </div>
                         <div>
-                            {{ $student['updated_at'] }}
+                            Latest Status
                         </div>
-                    @endif
-                @endforeach
+                        <div>
+                            Status Creation Date
+                        </div>
+                    </div>
+
+                    @foreach ($users as $row)
+                        @if ($row->id === auth()->id() || auth()->user()?->role > 1)
+                            @if (str_contains(strtolower($row->first_name . ' ' . $row->last_name), strtolower(request()->input('search'))) ||
+                                str_contains(strtolower($row->last_name . ' ' . $row->first_name), strtolower(request()->input('search'))))
+                                <x-reportRow :row='$row' :userType='$userType' />
+                            @endif
+                        @endif
+                    @endforeach
+                </div>
             @else
-                <p>No students found</p>
+                <p>No {{ $userType == 'students' ? 'students' : 'teachers' }} found</p>
             @endunless
 
-            <a href="/students/create">Create Student</a>
-            <a href="/students/report">Get students report</a>
+            @if ($userType == 'students')
+                <a href="/students/create">Create Student</a>
+            @elseif($userType == 'teachers')
+                <a href="/teachers/create">Create Teacher</a>
+            @endif
+            {{-- <a href="/students/report">Get students report</a> --}}
         </div>
     </x-layout>

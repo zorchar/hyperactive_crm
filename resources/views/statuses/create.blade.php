@@ -1,5 +1,5 @@
 <x-layout>
-    <form method="POST" action={{ '/students/' . $id . '/statuses' }}>
+    <form method="POST" action={{ '/users/' . $id . '/statuses' }}>
         @csrf
 
         <textarea name="description" id="" cols="30" rows="10"></textarea>

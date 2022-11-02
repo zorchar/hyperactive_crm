@@ -49,6 +49,12 @@ class UserController extends Controller
     // Show My Profile
     public function show()
     {
+        $userType = '';
+        if (auth()->user()->role == 1)
+            $userType = 'students';
+        if (auth()->user()->role == 2)
+            $userType = 'teachers';
+
         $user = auth()->user();
         unset($user['password']);
         unset($user['remember_token']);
@@ -56,9 +62,10 @@ class UserController extends Controller
         unset($user['updated_at']);
 
         return view('students.student', [
-            'student' => $user,
+            'user' => $user,
             'status' => Status::latest()->filter(auth()->id())->get()->first(),
-            'question' => Question::latest()->filter(auth()->id())->get()->first()
+            'question' => Question::latest()->filter(auth()->id())->get()->first(),
+            'userType' => $userType
             // 'User' => User::class
         ]);
     }

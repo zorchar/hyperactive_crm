@@ -42,6 +42,7 @@
             @enderror
 
             <div>
+                Is remote?
                 @if ($studyDaysMold[$i] && $studyDaysMold[$i]['is_remote'])
                     <input type="checkbox" name={{ 'is_remote' . $i }} checked />
                 @else

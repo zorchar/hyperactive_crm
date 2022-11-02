@@ -42,21 +42,29 @@ Route::get('/me', [UserController::class, 'show']);
 //     ]);
 // });
 
-// Show All Students
+// Show All Users Of Type
 Route::get('/students', [StudentController::class, 'index'])->middleware('authTeacher');
 
-// Show Create Student
-Route::get('/students/create', [StudentController::class, 'create'])->middleware('authTeacher');
+// Show All Teachers
+Route::get('/teachers', [StudentController::class, 'indexTeachers'])->middleware('authAdmin');
 
-// Store Student Data
-Route::post('/students', [StudentController::class, 'store'])->middleware('authTeacher');
+// Show Create User
+Route::get('/{userType}/create', [StudentController::class, 'create'])->middleware('authTeacher');
 
-// Show Students Report
-Route::get('/students/report', [StudentController::class, 'showReport']);
+// Store User Data
+Route::post('/{userType}', [StudentController::class, 'store'])->middleware('authTeacher');
 
 // Single Student
-Route::get('/students/{student}', [StudentController::class, 'show']);
+Route::get('/students/{user}', [StudentController::class, 'show']);
 
+// Single Teacher
+Route::get('/teachers/{user}', [StudentController::class, 'show'])->middleware('authTeacher');
+
+// Delete User
+Route::get('/{userType}/{user}/confirm_delete', [StudentController::class, 'showDestroy'])->middleware('authAdmin');
+
+// Delete User
+Route::delete('/users/{user}', [StudentController::class, 'destroy'])->middleware('authAdmin');
 
 
 
@@ -65,11 +73,17 @@ Route::get('/students/{student}', [StudentController::class, 'show']);
 // Show All Student's Statuses
 Route::get('/students/{student}/statuses', [StatusController::class, 'showAllStudentStatuses'])->middleware('authTeacher');
 
+// Show All Teacher's Statuses
+Route::get('/teachers/{student}/statuses', [StatusController::class, 'showAllStudentStatuses'])->middleware('authAdmin');
+
 // Show Create Status
 Route::get('/students/{id}/statuses/create', [StatusController::class, 'create'])->middleware('authTeacher');
 
+// Show Create Teacher Status
+Route::get('/teachers/{id}/statuses/create', [StatusController::class, 'create'])->middleware('authAdmin');
+
 // Store Status Data
-Route::post('/students/{id}/statuses', [StatusController::class, 'store'])->middleware('authTeacher');
+Route::post('/users/{user}/statuses', [StatusController::class, 'store'])->middleware('authTeacher');
 
 
 // study_days //
@@ -108,10 +122,10 @@ Route::put('/students/{studentId}/questions/{question}', [QuestionController::cl
 // attendances
 
 // Show All Student's Attendances
-Route::get('/students/{student}/attendances', [AttendanceController::class, 'showAllStudentAttendances']);
+Route::get('/students/{student}/attendances', [AttendanceController::class, 'showAllStudentAttendances'])->middleware('authTeacher');
 
 // Store Attendance
-Route::get('/students/{student}/attendances/validate', [AttendanceController::class, 'store']);
+Route::get('/students/{user}/attendances/validate', [AttendanceController::class, 'store']);
 
 // Update Attendance
-Route::put('/students/{student}/attendances/{attendance}', [AttendanceController::class, 'update']);
+Route::put('/students/{student}/attendances/{attendance}', [AttendanceController::class, 'update'])->middleware('authTeacher');

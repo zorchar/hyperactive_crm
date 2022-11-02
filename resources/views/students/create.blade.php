@@ -1,7 +1,7 @@
 <x-layout>
     create student page
 
-    <form method="POST" action="/students">
+    <form method="POST" action={{ '/' . $userType }}>
         @csrf
 
         <div>
@@ -95,7 +95,7 @@
             {{ $message }}
         @enderror
 
-        <button>Create Student</button>
+        <button>Create {{ $userType == 'students' ? 'Student' : 'Teacher' }}</button>
 
     </form>
 </x-layout>

@@ -11,6 +11,9 @@ class QuestionController extends Controller
     // Show All Student's Questions
     public function showAllStudentQuestions(User $student)
     {
+        if (!auth()->user() || auth()->user()->id != $student->id && auth()->user()->role == 1)
+            return redirect('/')->with('message', 'Not Authorized');
+
         return view('questions.questions', [
             'student' => $student,
             'questions' => Question::latest()->filter($student['id'])->get()
@@ -20,6 +23,9 @@ class QuestionController extends Controller
     // Show Create Form
     public function create($studentId)
     {
+        if (!auth()->user() || auth()->user()->id != $studentId && auth()->user()->role == 1)
+            return redirect('/')->with('message', 'Not Authorized');
+
         return view('questions.create', [
             'studentId' => $studentId
         ]);
@@ -28,6 +34,9 @@ class QuestionController extends Controller
     // Store Question Data
     public function store($studentId, Request $request)
     {
+        if (!auth()->user() || auth()->user()->id != $studentId && auth()->user()->role == 1)
+            return redirect('/')->with('message', 'Not Authorized');
+
         $formFields = $request->validate([
             'question' => 'required', // add trim
         ]);
@@ -44,6 +53,9 @@ class QuestionController extends Controller
     // Show Edit Form
     public function edit($studentId, Question $question)
     {
+        if (!auth()->user() || auth()->user()->id != $studentId && auth()->user()->role == 1)
+            return redirect('/')->with('message', 'Not Authorized');
+
         return view('questions.edit', [
             'studentId' => $studentId,
             'question' => $question,
@@ -54,9 +66,12 @@ class QuestionController extends Controller
     // Update Question
     public function update($studentId, Question $question, Request $request)
     {
-        if (auth()->id() != $studentId && !auth()->user()?->role > 1) {
-            abort(403, 'Unauthorized Action');
-        }
+        if (!auth()->user() || auth()->user()->id != $studentId && auth()->user()->role == 1)
+            return redirect('/')->with('message', 'Not Authorized');
+
+        // if (auth()->id() != $studentId && !auth()->user()?->role > 1) {
+        //     abort(403, 'Unauthorized Action');
+        // }
 
         if (auth()->id() == $studentId) {
 

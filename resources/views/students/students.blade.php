@@ -1,3 +1,5 @@
+{{-- not used!!!!!!!!!!!!!!!!!!!! --}}
+
 <x-layout>
 
     @include('searchBarScript')
@@ -7,13 +9,16 @@
     <div class="test">
         This is the welcome main
         @unless(count($students) == 0)
-            @foreach ($students as $student)
-                @if ($student->id === auth()->id() || auth()->user()?->role > 1)
-                    <div>
-                        <a href="/students/{{ $student['id'] }}">{{ $student->first_name . ' ' . $student->last_name }}</a>
-                    </div>
-                @endif
-            @endforeach
+            <div class="student-container">
+                @foreach ($students as $student)
+                    @if ($student->id === auth()->id() || auth()->user()?->role > 1)
+                        <div class="student-row">
+                            <a
+                                href="/students/{{ $student['id'] }}">{{ $student->first_name . ' ' . $student->last_name }}</a>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
         @else
             <p>No students found</p>
         @endunless
