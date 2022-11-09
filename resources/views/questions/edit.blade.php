@@ -21,7 +21,13 @@
         </form>
         @if ($question->teacher_remark)
             <div>The answer is: {{ $question->teacher_remark }}</div>
-            <div>Answered by: {{ $User::find($question->updated_by)->first_name }}</div>
+            <div>
+                <?php
+                $user = $User::find($question->updated_by);
+                ?>
+
+                Answered by: {{ $user->first_name . ' ' . $user->last_name }}
+            </div>
         @else
             <div>You haven't gotten an answer yet</div>
         @endif

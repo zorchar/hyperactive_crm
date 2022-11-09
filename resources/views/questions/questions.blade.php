@@ -1,11 +1,32 @@
 <x-layout>
-    {{ $student['first_name'] . ' ' . $student['last_name'] }}
+    <div class="name">
+        {{ $student['first_name'] . ' ' . $student['last_name'] }}
+    </div>
+
     <br />
-    @foreach ($questions as $question)
-        <a href="/students/{{ $student['id'] }}/questions/{{ $question['id'] }}">
-            <x-question.question :question='$question' />
-        </a>
-    @endforeach
+    <div class="table-name">Questions</div>
+    @if ($questions->count() > 0)
+        <div class="table">
+            <div class="table-row first">
+                <div>
+                    Question
+                </div>
+                <div>
+                    Answer
+                </div>
+                <div>
+                    Answered By
+                </div>
+            </div>
+            @foreach ($questions as $question)
+                <a class="table-row" href={{ '/students/' . $question->student_id . '/questions/' . $question->id }}>
+                    <x-question.question :question='$question' />
+                </a>
+            @endforeach
+        </div>
+    @else
+        <div class="table-name frame">No quesitons found</div>
+    @endif
     @if (auth()->user()->role == 1)
         <div>
             <a class="login-button" href={{ '/students/' . $student['id'] . '/questions/create' }}>New Question</a>

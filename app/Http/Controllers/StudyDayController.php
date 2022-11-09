@@ -64,7 +64,7 @@ class StudyDayController extends Controller
                 }
             }
 
-            return redirect('/students/' . $id . '/study_days')->with('message', 'Study Days Created!');
+            return redirect('/students/' . $id)->with('message', 'Study Days Created!');
         }
 
         abort(403, 'Unauthorized Action');

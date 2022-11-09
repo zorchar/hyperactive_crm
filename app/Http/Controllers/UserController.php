@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use App\Models\Status;
+use App\Models\StudyDay;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -65,8 +66,9 @@ class UserController extends Controller
             'user' => $user,
             'status' => Status::latest()->filter(auth()->id())->get()->first(),
             'question' => Question::latest()->filter(auth()->id())->get()->first(),
-            'userType' => $userType
-            // 'User' => User::class
+            'userType' => $userType,
+            'daysOfWeek' => ['Sunday', 'Monday', 'Tuesday', 'Wednsday', 'Thursday', 'Friday', 'Saturday'],
+            'studyDays' => StudyDay::filter($user['id'])->get()
         ]);
     }
 }

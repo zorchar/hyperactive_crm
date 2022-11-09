@@ -2,8 +2,12 @@
         {{ $status['description'] }}
     </div>
     <div>
-        {{ $status['created_at'] }}
+        {{ date('d-m-Y H:i:s', strtotime($status['created_at'])) }}
     </div>
     <div>
-        {{ App\Models\User::find($status['creator'])?->first_name ? App\Models\User::find($status['creator'])?->first_name : 'Not Available' }}
+        <?php
+        $user = App\Models\User::find($status['creator']);
+        ?>
+
+        {{ $user ? $user->first_name . ' ' . $user->last_name : 'Not Available' }}
     </div>

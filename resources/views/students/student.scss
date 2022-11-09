@@ -18,23 +18,26 @@
 .test {
     .login-button {
         text-decoration: none;
-        width: 130px;
+        width: max-content;
         margin-top: 20px;
     }
 
     .delete-button {
         background-color: #b63737;
+        &:hover {
+            background-color: #922c2c;
+        }
     }
 
     .delete-button_parent {
         direction: rtl;
     }
 
-    .student-container {
+    .table {
         a {
             text-decoration: none;
         }
-        .student-row {
+        .table-row {
             div {
                 width: 33.33%;
             }
@@ -42,7 +45,7 @@
     }
 
     .attendances {
-        .student-row {
+        .table-row {
             div {
                 width: 50%;
             }

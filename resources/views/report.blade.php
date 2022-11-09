@@ -10,9 +10,9 @@
             This is the report
             @unless(count($users) == 0)
 
-                <div class="student-container">
+                <div class="table">
 
-                    <div class="student-row first">
+                    <div class="table-row first">
                         <div>
                             Full Name
                         </div>
@@ -41,10 +41,9 @@
             @endunless
 
             @if ($userType == 'students')
-                <a href="/students/create">Create Student</a>
+                <a class="login-button" href="/students/create">Create Student</a>
             @elseif($userType == 'teachers')
-                <a href="/teachers/create">Create Teacher</a>
+                <a class="login-button" href="/teachers/create">Create Teacher</a>
             @endif
-            {{-- <a href="/students/report">Get students report</a> --}}
         </div>
     </x-layout>

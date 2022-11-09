@@ -7,6 +7,7 @@ use App\Models\Question;
 use App\Models\Status;
 use App\Models\StudyDay;
 use App\Models\User;
+use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -58,7 +59,7 @@ class StudentController extends Controller
         unset($user['remember_token']);
         unset($user['created_at']);
         unset($user['updated_at']);
-        session(['queriedUser' => $user]); // check later if needed
+        // session(['queriedUser' => $user]); // check later if needed
 
         if ($user->role == 1)
             $userType = 'students';
@@ -95,6 +96,9 @@ class StudentController extends Controller
     // Store Student Data
     public function store($userType, Request $request)
     {
+        if (auth()->user()->role === 2 && $userType === 'teachers')
+            redirect('/')->with('message', 'Not Authorized');
+
         $formFields = $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',

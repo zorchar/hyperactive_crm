@@ -14,6 +14,7 @@ class Question extends Model
     public function scopeFilter($query, $id)
     {
         if ($id ?? false) {
+            // $query->where('student_id', 'like', $id);
             $query->where('student_id', 'like', $id);
         }
     }

@@ -9,27 +9,27 @@
 
             @if ($status)
                 <div class="table-name">Latest Status</div>
-                <div class="student-container">
+                <div class="table">
 
-                    <div class="student-row first">
+                    <div class="table-row first">
                         <div>
                             Status Description
                         </div>
                         <div>
-                            Creation Date
+                            Creation Date And Time
                         </div>
                         <div>
                             Created By
                         </div>
                     </div>
 
-                    <a class="student-row" href={{ '/' . $userType . '/' . $user['id'] . '/statuses' }}>
+                    <a class="table-row" href={{ '/' . $userType . '/' . $user['id'] . '/statuses' }}>
                         <x-status.status :status='$status' />
                     </a>
 
                 </div>
             @else
-                <div class="table-name">No Statuses</div>
+                <div class="table-name frame">No Statuses</div>
             @endif
 
             <div>
@@ -41,9 +41,9 @@
 
             @if ($question)
                 <div class="table-name">Latest Question</div>
-                <div class="student-container">
+                <div class="table">
 
-                    <div class="student-row first">
+                    <div class="table-row first">
                         <div>
                             Question
                         </div>
@@ -55,13 +55,13 @@
                         </div>
                     </div>
 
-                    <a class="student-row" href={{ '/' . $userType . '/' . $user['id'] . '/questions' }}>
+                    <a class="table-row" href={{ '/' . $userType . '/' . $user['id'] . '/questions' }}>
                         <x-question.question :question='$question' />
                     </a>
 
                 </div>
             @else
-                <div class="table-name">No quesitons found</div>
+                <div class="table-name frame">No quesitons found</div>
             @endif
 
         @endif
@@ -70,9 +70,9 @@
 
             @if ($attendance)
                 <div class="table-name">Latest Attendance</div>
-                <div class="student-container attendances">
+                <div class="table attendances">
 
-                    <div class="student-row first">
+                    <div class="table-row first">
                         <div>
                             Time Of Entry
                         </div>
@@ -81,7 +81,7 @@
                         </div>
                     </div>
 
-                    <a class="student-row" href={{ '/' . $userType . '/' . $user['id'] . '/attendances' }}>
+                    <a class="table-row" href={{ '/' . $userType . '/' . $user['id'] . '/attendances' }}>
                         <div>
                             {{ $attendance['approved_time_of_entry'] ? $attendance['approved_time_of_entry'] : $attendance['created_at'] }}
                         </div>
@@ -92,53 +92,59 @@
 
                 </div>
             @else
-                <div class="table-name">No quesitons found</div>
+                <div class="table-name frame">No attendances found</div>
             @endif
 
         @endif
 
-        @if (auth()->user()?->role > 1 && $user->role == 1)
-            {{-- <div>
-                <a href={{ '/' . $userType . '/' . $user->id . '/study_days' }}>View Study Days</a>
-            </div> --}}
+        @if ((auth()->user()?->role > 1 && $user->role == 1) ||
+            (auth()->id() === $user->id && auth()->user()?->role !== 3))
 
+            @if ($studyDays->count() > 0)
+                <div class="table-name">Study Days</div>
+                <div class="table">
+                    <div class="table-row first">
+                        <div>
+                            Day
+                        </div>
+                        <div>
+                            Start Time
+                        </div>
+                        <div>
+                            End Time
+                        </div>
+                        <div>
+                            Frontal/Remote
+                        </div>
+                    </div>
 
-
-
-            <div class="table-name">Study Days</div>
-            <div class="student-container">
-                <div class="student-row first">
-                    <div>
-                        Day
-                    </div>
-                    <div>
-                        Start Time
-                    </div>
-                    <div>
-                        End Time
-                    </div>
-                    <div>
-                        Frontal/Remote
-                    </div>
+                    @foreach ($studyDays as $studyDay)
+                        <{{ auth()->user()->role > 2 ? 'a' : 'div' }} class="table-row"
+                            href={{ '/' . $userType . '/' . $user['id'] . '/study_days/create' }}>
+                            <div>
+                                {{ $daysOfWeek[$studyDay['day_of_week'] - 1] }}
+                            </div>
+                            <div>
+                                {{ $studyDay['start_time'] }}
+                            </div>
+                            <div>
+                                {{ $studyDay['end_time'] }}
+                            </div>
+                            <div>
+                                {{ $studyDay['is_remote'] == 1 ? 'Remote' : 'Frontal' }}
+                            </div>
+                            <{{ auth()->user()->role > 2 ? '/a' : '/div' }}>
+                    @endforeach
                 </div>
+            @else
+                <div class="table-name frame">No study days defined</div>
+            @endif
 
-                @foreach ($studyDays as $studyDay)
-                    <a class="student-row" href={{ '/' . $userType . '/' . $user['id'] . '/study_days' }}>
-                        <div>
-                            {{ $daysOfWeek[$studyDay['day_of_week'] - 1] }}
-                        </div>
-                        <div>
-                            {{ $studyDay['start_time'] }}
-                        </div>
-                        <div>
-                            {{ $studyDay['end_time'] }}
-                        </div>
-                        <div>
-                            {{ $studyDay['is_remote'] == 1 ? 'Remote' : 'Frontal' }}
-                        </div>
-                    </a>
-                @endforeach
-            </div>
+            @if (auth()->user()->role === 3)
+                <a class="login-button" href="/students/{{ $user->id }}/study_days/create">
+                    Edit Study Days
+                </a>
+            @endif
 
         @endif
 

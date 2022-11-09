@@ -5,14 +5,15 @@
             {{ $student['first_name'] . ' ' . $student['last_name'] }}
         </div>
 
-        <div class="student-container">
+        <div class="table-name">Statuses</div>
+        <div class="table">
 
-            <div class="student-row first">
+            <div class="table-row first">
                 <div>
                     Status Description
                 </div>
                 <div>
-                    Creation Date
+                    Creation Date And Time
                 </div>
                 <div>
                     Created By
@@ -20,7 +21,7 @@
             </div>
 
             @foreach ($statuses as $status)
-                <div class="student-row">
+                <div class="table-row">
                     <x-status.status :status='$status' />
                 </div>
             @endforeach

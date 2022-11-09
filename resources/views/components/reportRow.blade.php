@@ -1,4 +1,4 @@
-    <a href="/{{ $userType }}/{{ $row->id }}" class="student-row">
+    <a href="/{{ $userType }}/{{ $row->id }}" class="table-row">
         <div>
             {{ $row->last_name . ' ' . $row->first_name }}
         </div>
@@ -9,6 +9,6 @@
             {{ $row->description ? $row->description : 'No status' }}
         </div>
         <div>
-            {{ $row->created_at ? $row->created_at : 'No Status' }}
+            {{ $row->created_at ? date('d-m-Y H:i:s', strtotime($row->created_at)) : 'No Status' }}
         </div>
     </a>

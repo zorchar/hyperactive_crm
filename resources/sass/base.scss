@@ -1,1 +1,163 @@
 $myBlue: #4276a2;
+
+@import "../views/students/student.scss";
+@import "../views/users/login.scss";
+@import "../views/statuses/statuses.scss";
+@import "../views/components/attendance/attendance.scss";
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Times New Roman", Times, serif;
+    font-size: large;
+}
+
+body {
+    position: relative;
+    min-height: 100vh;
+    background: #eee;
+    padding-bottom: 50px;
+}
+
+main {
+    padding: 10px;
+}
+
+.test {
+    background: #eee;
+}
+
+nav,
+footer {
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: $myBlue;
+
+    .logout-button {
+        color: #fff;
+        border: none;
+        background: none;
+        &:hover {
+            color: #ccc;
+            cursor: pointer;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: #fff;
+        &:hover {
+            color: #ccc;
+        }
+    }
+
+    > div {
+        display: flex;
+        padding: 10px;
+        > div {
+            padding: 0 10px;
+        }
+    }
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+#search {
+    width: 200px;
+}
+
+.cell {
+    width: 200px;
+    height: 30px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        background-color: aqua;
+    }
+}
+
+.table {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    .table-row {
+        color: #000;
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+        min-height: 50px;
+        text-decoration: none;
+        font-size: larger;
+
+        div {
+            width: 33.3%;
+            overflow-wrap: anywhere;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            border: 1px solid $myBlue;
+            border-bottom: transparent;
+        }
+
+        &:last-child {
+            border-bottom: 1px solid $myBlue;
+        }
+
+        &:hover {
+            background-color: #aaa;
+            cursor: pointer;
+        }
+
+        &:active {
+            background-color: #777;
+        }
+    }
+
+    div.table-row:hover {
+        cursor: unset;
+        background-color: #eee;
+    }
+
+    .first {
+        cursor: unset;
+        div {
+            cursor: unset;
+        }
+        font-weight: 700;
+        &:hover {
+            background-color: #eee;
+            cursor: unset;
+        }
+
+        &:active {
+            background-color: #eee;
+        }
+    }
+}
+
+.frame {
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.flexbox {
+    display: flex;
+    column-gap: 10px;
+}
